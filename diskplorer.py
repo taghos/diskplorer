@@ -28,6 +28,8 @@ optparser.add_option('-m', '--max-concurrency', dest='maxdepth', default=128, ty
                      help='Test maximum concurrency level N', metavar='N')
 optparser.add_option('-o', '--output', dest='output_filename', default='disk-concurrency-response.svg',
                      help='Write output graph to FILE', metavar='FILE')
+optparser.add_option('-t', '--title', dest='title', default=None,
+                     help='Use STRING as title for the resulting graph', metavar='STRING')
 optparser.add_option('--raw-results', dest='raw_results_filename',
                      metavar='FILE', default='disk-concurrency-response.csv',
                      help='Write raw results (.csv) to FILE')
@@ -42,6 +44,7 @@ filesize = options.filesize
 maxdepth = options.maxdepth
 buffer_size = options.buffer_size
 output_filename = options.output_filename
+graph_title = options.title
 raw_filename = options.raw_results_filename
 input_json_results = options.input_json_results
 input_filename = 'fiotest.tmp'
@@ -156,6 +159,9 @@ ax2.set_ylabel(u'average latency (us)', color='r')
 for tl in ax2.get_yticklabels():
     tl.set_color('r')
     
+if graph_title:
+    plt.title(graph_title)
+
 plt.savefig(filename=output_filename)
 
 with open(raw_filename, 'w') as raw:
